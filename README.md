@@ -2,7 +2,7 @@ dk2_to_sk2_calculator
 =======
 
 
-An open source Matlab utility for time domain FLIM/FRET analysis of fluorescence decays originated from static random isotropic donor-acceptor pairs. The influence of dipole-dipole orientation factor kappa-squared (k2) is modelled with the help of "static" ("sk2") FRET efficiency distribution. 
+An open source Matlab utility for time domain FLIM/FRET analysis of fluorescence decays originated from static randomly isotropically oriented donor-acceptor pairs. The influence of dipole-dipole orientation factor kappa-squared (k2) is modelled with the help of "static" ("sk2") FRET efficiency distribution. 
 
 The calculator finds an sk2 decay closest to the fitted conventional double exponential decay ("dk2", corresponding to the dynamic random isotropic model of k2).
 
