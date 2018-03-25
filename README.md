@@ -28,7 +28,7 @@ Input table should contain 3 columns - "tau_D", "tau_DA", and "beta_DA". Every r
 
 1. After cloning repository from github, go to Matlab and run the file "dk2_to_sk2_calculator.m".
 
-2. If running first time, wait until software finds Excel directory. It then displays small GUI window. This is single button app.
+2. If running first time, wait until software finds Excel directory. It then displays small GUI window; this is single-button app.
 
 3. Go to "File"->"Load data and calculate sk2 correction" and navigate to your input dk2 data table. 
 After processing the input, the software will open results as Excel table with additional columns for corresponding sk2 parameters.
