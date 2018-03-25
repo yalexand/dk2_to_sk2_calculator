@@ -24,7 +24,7 @@ TIPS ON USAGE
 =======
 
 0. Having the results of dk2 fitting (obtained with the help of software like FLIMfit), prepare the input Excel table.
-Input table should contain 3 columns - "tau_D", "tau_DA", and "beta_DA" (molar fraction of FRETting donor). Lifetimes should be expressed in picoseconds.  Every row represents a fit of data to the dk2 model. 
+Input table should contain 3 columns - "tau_D", "tau_DA", and "beta_DA" (molar fraction of FRET state). Lifetimes should be expressed in picoseconds.  Every row represents a fit of data to the dk2 model. 
 
 1. After cloning repository from github, go to Matlab and run the file "dk2_to_sk2_calculator.m".
 
