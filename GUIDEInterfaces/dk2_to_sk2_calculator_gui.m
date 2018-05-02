@@ -22,7 +22,7 @@ function varargout = dk2_to_sk2_calculator_gui(varargin)
 
 % Edit the above text to modify the response to help dk2_to_sk2_calculator_gui
 
-% Last Modified by GUIDE v2.5 24-Mar-2018 12:55:58
+% Last Modified by GUIDE v2.5 02-May-2018 12:27:11
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -83,8 +83,15 @@ handles.settings = load_settings([pwd filesep handles.settings_filename]);
            save_settings([pwd filesep handles.settings_filename],handles.settings);                
            end
 
+% these are for dk2 only           
+handles.tau_D = 3500;
+handles.tau_DA = 1000;
+handles.beta_DA = 0.44;
+
 % Update handles structure
 guidata(hObject, handles);
+
+recalculate(hObject,handles);
 
 % UIWAIT makes dk2_to_sk2_calculator_gui wait for user response (see UIRESUME)
 % uiwait(handles.figure1);
@@ -174,20 +181,183 @@ function load_data_and_calculate_correction_Callback(hObject, eventdata, handles
         save_settings([pwd filesep handles.settings_filename],handles.settings);
 
 
+function tauD_dk2_Callback(hObject, eventdata, handles)
+% hObject    handle to tauD_dk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tauD_dk2 as text
+%        str2double(get(hObject,'String')) returns contents of tauD_dk2 as a double
+tau_D = str2double(get(hObject,'String'));
+if ~isnan(tau_D) && tau_D > handles.tau_DA
+    handles.tau_D = tau_D;
+    guidata(hObject, handles);
+    recalculate(hObject, handles);
+else
+    set(handles.tauD_dk2,'String',num2str(handles.tau_D));
+    set(handles.tauD_sk2,'String',num2str(handles.tau_D));
+end
 
 
+% --- Executes during object creation, after setting all properties.
+function tauD_dk2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tauD_dk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 
+function tauFRET_dk2_Callback(hObject, eventdata, handles)
+% hObject    handle to tauFRET_dk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of tauFRET_dk2 as text
+%        str2double(get(hObject,'String')) returns contents of tauFRET_dk2 as a double
+tau_DA = str2double(get(hObject,'String'));
+if ~isnan(tau_DA) && tau_DA < handles.tau_D
+    handles.tau_DA = tau_DA;
+    guidata(hObject, handles);
+    recalculate(hObject, handles);
+else
+    set(handles.tauFRET_dk2,'String',num2str(handles.tau_DA));
+end    
 
 
+% --- Executes during object creation, after setting all properties.
+function tauFRET_dk2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tauFRET_dk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 
+function beta_dk2_Callback(hObject, eventdata, handles)
+% hObject    handle to beta_dk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of beta_dk2 as text
+%        str2double(get(hObject,'String')) returns contents of beta_dk2 as a double
+beta_DA = str2double(get(hObject,'String'));
+if ~isnan(beta_DA) && 0 < beta_DA && beta_DA < 1
+    handles.beta_DA = beta_DA;
+    guidata(hObject, handles);
+    recalculate(hObject, handles);
+else
+    set(handles.beta_dk2,'String',num2str(handles.beta_DA));
+end    
 
 
+% --- Executes during object creation, after setting all properties.
+function beta_dk2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to beta_dk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 
+function eta_dk2_Callback(hObject, eventdata, handles)
+% hObject    handle to eta_dk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of eta_dk2 as text
+%        str2double(get(hObject,'String')) returns contents of eta_dk2 as a double
 
 
+% --- Executes during object creation, after setting all properties.
+function eta_dk2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to eta_dk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
 
 
+function tauD_sk2_Callback(hObject, eventdata, handles)
+% hObject    handle to tauD_sk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
 
+% Hints: get(hObject,'String') returns contents of tauD_sk2 as text
+%        str2double(get(hObject,'String')) returns contents of tauD_sk2 as a double
+
+
+% --- Executes during object creation, after setting all properties.
+function tauD_sk2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tauD_sk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+% --- Executes during object creation, after setting all properties.
+function tauFRET_sk2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to tauFRET_sk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+
+% --- Executes during object creation, after setting all properties.
+function beta_sk2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to beta_sk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+
+% --- Executes during object creation, after setting all properties.
+function eta_sk2_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to eta_sk2 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+function recalculate(hObject,handles)
+
+tau_D = handles.tau_D;
+tau_DA = handles.tau_DA;
+beta_DA = handles.beta_DA;
+                %
+                try
+                    ret = adjust_sk2_decay(tau_D,tau_DA,beta_DA);
+                catch
+                    ret = nan(1,9);
+                end
+                %
+set(handles.tauFRET_sk2,'String',ret.tau_DA_sk2);
+set(handles.tauFRET_dk2,'String',ret.tau_DA_dk2);
+set(handles.beta_sk2,'String',ret.beta_DA_sk2);
+set(handles.beta_dk2,'String',ret.beta_DA_dk2);
+set(handles.eta_sk2,'String',ret.eta_sk2);
+set(handles.eta_dk2,'String',ret.eta_dk2);
+set(handles.sk2_E,'String',ret.E_sk2);
+set(handles.dk2_E,'String',ret.E_dk2);
+set(handles.tauD_dk2,'String',ret.tau_D);
+set(handles.tauD_sk2,'String',ret.tau_D);
+    
+% Update handles structure
+guidata(hObject, handles);
